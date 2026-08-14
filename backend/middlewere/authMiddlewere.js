@@ -6,6 +6,8 @@ export const Protect=(req,res,next)=>{
     try{
     // const token=req.cookie.token;
     const token=req.cookies.token;
+    console.log("Cookies:", req.cookies);
+    console.log("Token:", req.cookies.token);
     
 // console.log("Before Verify");
 
