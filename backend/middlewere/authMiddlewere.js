@@ -29,6 +29,7 @@ const decoded = jwt.verify(token, process.env.JWT_SECRET);
     next();
 
     }catch(error){
+         console.log("JWT ERROR:", error.message);
         res.status(401).json({
             success:false,
             message:"Invalid Token",
