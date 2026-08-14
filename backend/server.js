@@ -1,6 +1,6 @@
 import express from 'express';
 const app=express();
-const port=8080;
+const PORT=process.env.PORT || 8080;
 
 import http from "http";
 import { Server } from "socket.io";
@@ -60,6 +60,6 @@ const io=new Server(server,{
 
 socketHandler(io);
 
-server.listen(port,()=>{
+server.listen(PORT,()=>{
     console.log(`server is listening`)
 })
