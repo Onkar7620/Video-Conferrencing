@@ -21,7 +21,7 @@ export default function Dashboard() {
   );
   navigate(`/meeting/${res.data.meeting.meetingId}`)
   }catch(error){
-    alert(err.response.data.message)
+    alert(error.response.data.message)
   }
  }
 
