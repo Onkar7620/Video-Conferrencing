@@ -203,7 +203,7 @@ export default function MeetingRoom() {
         }
     },[]);
     return(
-       <div className="min-h-screen bg-slate-950 text-white">
+      <div className="min-h-screen bg-slate-950 text-white">
 
   {/* Header */}
   <div className="border-b border-slate-800 p-4 md:p-5">
@@ -224,13 +224,17 @@ export default function MeetingRoom() {
 
     {/* Local Video */}
     <div className="w-full lg:w-1/2 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
-      <video
-        ref={localVideoRef}
-        autoPlay
-        playsInline
-        muted
-        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover"
-      />
+      
+      <div className="aspect-video bg-black">
+        <video
+          ref={localVideoRef}
+          autoPlay
+          playsInline
+          muted
+          className="w-full h-full object-contain"
+        />
+      </div>
+
       <div className="p-3 text-center bg-slate-800">
         You
       </div>
@@ -238,12 +242,16 @@ export default function MeetingRoom() {
 
     {/* Remote Video */}
     <div className="w-full lg:w-1/2 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
-      <video
-        ref={remoteVideoRef}
-        autoPlay
-        playsInline
-        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover"
-      />
+      
+      <div className="aspect-video bg-black">
+        <video
+          ref={remoteVideoRef}
+          autoPlay
+          playsInline
+          className="w-full h-full object-contain"
+        />
+      </div>
+
       <div className="p-3 text-center bg-slate-800">
         Participant
       </div>
@@ -251,7 +259,7 @@ export default function MeetingRoom() {
 
   </div>
 
-  {/* Controls - Only Once */}
+  {/* Controls */}
   <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-900 border border-slate-700 px-5 py-3 rounded-full shadow-xl">
 
     <button
