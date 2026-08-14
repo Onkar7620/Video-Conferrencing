@@ -205,94 +205,86 @@ export default function MeetingRoom() {
     return(
        <div className="min-h-screen bg-slate-950 text-white">
 
-      {/* Header */}
-      <div className="border-b border-slate-800 p-5">
+  {/* Header */}
+  <div className="border-b border-slate-800 p-4 md:p-5">
+    <h1 className="text-2xl md:text-3xl font-bold">
+      Meeting Room
+    </h1>
 
-        <h1 className="text-3xl font-bold">
-          Meeting Room
-        </h1>
+    <p className="text-slate-400 mt-2 text-sm md:text-base">
+      Meeting ID:
+      <span className="font-semibold text-green-400 ml-2">
+        {meetingId}
+      </span>
+    </p>
+  </div>
 
-        <p className="text-slate-400 mt-2">
-          Meeting ID:{" "}
-          <span className="font-semibold text-green-400">
-            {meetingId}
-          </span>
-        </p>
+  {/* Videos */}
+  <div className="flex flex-col lg:flex-row justify-center items-center gap-6 p-4 md:p-6">
 
+    {/* Local Video */}
+    <div className="w-full lg:w-1/2 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+      <video
+        ref={localVideoRef}
+        autoPlay
+        playsInline
+        muted
+        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover"
+      />
+      <div className="p-3 text-center bg-slate-800">
+        You
       </div>
-
-      {/* Video Section */}
-      <div className="flex justify-center items-center h-[85vh] p-6">
-
-        <div className="bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
-
-          <video
-            ref={localVideoRef}
-            autoPlay
-            playsInline
-            className="w-[800px] max-w-full"
-          />
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-5">
-
-  <button
-    onClick={toggleMute}
-    className="bg-slate-800 p-4 rounded-full hover:bg-slate-700"
-  >
-    {isMuted ? <MicOff size={24} /> : <Mic size={24} />}
-  </button>
-
-  <button
-    onClick={toggleVideo}
-    className="bg-slate-800 p-4 rounded-full hover:bg-slate-700"
-  >
-    {isVideoOff ? <VideoOff size={24} /> : <Video size={24} />}
-  </button>
-
-  <button
-    onClick={endCall}
-    className="bg-red-600 p-4 rounded-full hover:bg-red-700"
-  >
-    <PhoneOff size={24} />
-  </button>
-
-</div>
-
-        </div>
-          <div className="bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            playsInline
-            className="w-[800px] max-w-full"
-          />
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-5">
-
-  <button
-    onClick={toggleMute}
-    className="bg-slate-800 p-4 rounded-full hover:bg-slate-700"
-  >
-    {isMuted ? <MicOff size={24} /> : <Mic size={24} />}
-  </button>
-
-  <button
-    onClick={toggleVideo}
-    className="bg-slate-800 p-4 rounded-full hover:bg-slate-700"
-  >
-    {isVideoOff ? <VideoOff size={24} /> : <Video size={24} />}
-  </button>
-
-  <button
-    onClick={endCall}
-    className="bg-red-600 p-4 rounded-full hover:bg-red-700"
-  >
-    <PhoneOff size={24} />
-  </button>
-
-</div>
-        </div>
-
-      </div>
-
     </div>
+
+    {/* Remote Video */}
+    <div className="w-full lg:w-1/2 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+      <video
+        ref={remoteVideoRef}
+        autoPlay
+        playsInline
+        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover"
+      />
+      <div className="p-3 text-center bg-slate-800">
+        Participant
+      </div>
+    </div>
+
+  </div>
+
+  {/* Controls - Only Once */}
+  <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-900 border border-slate-700 px-5 py-3 rounded-full shadow-xl">
+
+    <button
+      onClick={toggleMute}
+      className={`p-4 rounded-full transition ${
+        isMuted
+          ? "bg-red-600 hover:bg-red-700"
+          : "bg-slate-800 hover:bg-slate-700"
+      }`}
+    >
+      {isMuted ? <MicOff size={24} /> : <Mic size={24} />}
+    </button>
+
+    <button
+      onClick={toggleVideo}
+      className={`p-4 rounded-full transition ${
+        isVideoOff
+          ? "bg-red-600 hover:bg-red-700"
+          : "bg-slate-800 hover:bg-slate-700"
+      }`}
+    >
+      {isVideoOff ? <VideoOff size={24} /> : <Video size={24} />}
+    </button>
+
+    <button
+      onClick={endCall}
+      className="bg-red-600 hover:bg-red-700 p-4 rounded-full transition"
+    >
+      <PhoneOff size={24} />
+    </button>
+
+  </div>
+
+</div>
     )}
   
