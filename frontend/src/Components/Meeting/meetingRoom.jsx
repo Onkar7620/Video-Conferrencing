@@ -4,6 +4,9 @@ import { useParams,useNavigate } from "react-router-dom";
 import { Mic, MicOff, Video, VideoOff, PhoneOff } from "lucide-react";
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
+
 export default function MeetingRoom() {
 
     const [isMuted, setIsMuted] = useState(false);
@@ -38,7 +41,7 @@ export default function MeetingRoom() {
     const endCall=async()=>{
 
       try{
-        await axios.post("http://localhost:8080/api/meeting/endMeeting",
+        await axios.post(`${API}/api/meeting/endMeeting`,
         {meetingId},
         {withCredentials:true}
       )

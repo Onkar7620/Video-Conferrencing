@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import API from "../../Api/Api.js";
+const API = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
 const Auth = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -35,7 +35,7 @@ const Auth = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try{
-        const res=await axios.post("http://localhost:8080/api/auth/login",{email: loginData.email, password: loginData.password},
+        const res=await axios.post(`${API}/api/auth/login`,{email: loginData.email, password: loginData.password},
           {withCredentials: true,}
         );
         if(res.data.success){
@@ -54,7 +54,7 @@ const Auth = () => {
       return;
     }
     try{
-        const res=await axios.post("http://localhost:8080/api/auth/register",{name: signupData.name, email: signupData.email, password: signupData.password},
+        const res=await axios.post(`${API}/api/auth/register`,{name: signupData.name, email: signupData.email, password: signupData.password},
           {withCredentials: true,}
         );
         if(res.data.success){

@@ -2,6 +2,9 @@ import { Video, PlusCircle } from "lucide-react";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
+
+const API = import.meta.env.VITE_API_URL;
+
 export default function Dashboard() {
   const navigate=useNavigate()
   const [meetingId,setMeetingId]=useState("");
@@ -12,7 +15,7 @@ export default function Dashboard() {
 
  let handleCreateBtn =async(e)=>{
   try{
-    let res=await axios.post("http://localhost:8080/api/meeting/createMeeting",
+    let res=await axios.post(`${API}/api/meeting/createMeeting`,
     {},
     {withCredentials:true}
   );
@@ -25,7 +28,7 @@ export default function Dashboard() {
   let handleConnect=async(e)=>{
     e.preventDefault();
     try{
-    let res=await axios.post("http://localhost:8080/api/meeting/joinMeeting",
+    let res=await axios.post(`${API}/api/meeting/joinMeeting`,
       {meetingId},
       {withCredentials:true}
     )

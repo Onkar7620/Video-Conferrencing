@@ -1,13 +1,14 @@
 import {Link} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_URL;
 export default function HomePage() {
   const navigate=useNavigate();
   let handleGetStarted=async(e)=>{
     e.preventDefault();
     
     try{
-      const res=await axios.get("http://localhost:8080/me",
+      const res=await axios.get(`${API}/me`,
       {
         withCredentials: true,
       });
