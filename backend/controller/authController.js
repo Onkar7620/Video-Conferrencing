@@ -53,7 +53,6 @@ export const registerUser=async(req,res)=>{
 export const loginUser=async(req,res)=>{
 
     try{
-
     const {email,password}=req.body;
 
     let user=await User.findOne({email});
@@ -77,6 +76,7 @@ export const loginUser=async(req,res)=>{
     }
 
     const token=generateWebToken(user._id);
+    console.log("CLIENT_URL:", process.env.CLIENT_URL);
 
     res.cookie("token", token, {
         httpOnly: true,
@@ -84,6 +84,7 @@ export const loginUser=async(req,res)=>{
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000
     });
+    console.log("Cookie Set Successfully");
 
     res.status(200).json({
         success:true,

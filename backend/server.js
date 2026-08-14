@@ -17,15 +17,17 @@ import authRoutes from "./router/authRoutes.js"
 import meetingRoutes from "./router/meetingRoutes.js";
 
 dotenv.config();
-app.use(express.json());
-app.use(cookieParser());
-
-import { Protect } from './middlewere/authMiddlewere.js';
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
     credentials:true
 }));
+app.use(express.json());
+app.use(cookieParser());
+
+import { Protect } from './middlewere/authMiddlewere.js';
+
+
 
 app.use("/api/auth",authRoutes);
 app.use("/api/meeting",meetingRoutes);
