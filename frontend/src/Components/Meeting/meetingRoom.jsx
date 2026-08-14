@@ -153,7 +153,7 @@ export default function MeetingRoom() {
         socket.emit("join-room",meetingId);
         socket.on("offer",
           async({offer,sender})=>{
-
+             console.log("Offer Received");
             const pc=createPeerConnection();
             remoteSocketId.current=sender;
             await pc.setRemoteDescription(
@@ -175,11 +175,13 @@ export default function MeetingRoom() {
         )
         socket.on("answer",
           async({answer})=>{
+            console.log("Answer Received");
             await peerConnectionRef.current.setRemoteDescription(answer)}
         )
 
         socket.on("ice-candidate",
           async({candidate})=>{
+            console.log("ICE Received");
             if(peerConnectionRef.current){
               await peerConnectionRef.current.addIceCandidate(candidate);
             }

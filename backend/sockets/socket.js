@@ -11,6 +11,7 @@ export default function socketHandler(io){
         //offer
         socket.on("offer",
             ({offer,target})=>{
+                console.log("Offer received from:", socket.id);
                 io.to(target).emit(
                     "offer",{
                         offer,
@@ -23,7 +24,9 @@ export default function socketHandler(io){
 
         //Answer
 
-        socket.on("answer",({answer,target})=>{
+        socket.on("answer",
+            ({answer,target})=>{
+                console.log("Answer received from:", socket.id);
             io.to(target).emit(
                 "answer",{
                     answer,
@@ -34,14 +37,16 @@ export default function socketHandler(io){
 
         //ICE candidate
 
-        socket.on("ice-candidate",
+        socket.on("ice-candidate", 
             ({candidate,target})=>{
-                io.to(target).emit("candidate",
-                {
-                    candidate,
-                    sender:socket.id
-                })
-            }
-        )
+                 console.log("ICE candidate received from:", socket.id);
+                io.to(target).emit(
+                    "ice-candidate",
+                    {
+                        candidate,
+                        sender:socket.id
+                    }
+                );
+            });
     });
 }
