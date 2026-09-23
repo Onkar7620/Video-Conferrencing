@@ -3,12 +3,70 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import cookieParser from "cookie-parser";
 
-export const registerUser=async(req,res)=>{
+import Otp from "../models/Otp.js"
+import { sendOTPEmail } from "../utils/sendEmail.js";
+
+export const sendOtp=async(req,res)=>{
     try{
-        const {name,email,password}=req.body;
+        const {email}=req.body
+
+        const otp=Math.floor(
+            100000+Math.random()*900000
+        ).toString();
+
+        await Otp.deleteMany({email})
+
+        await Otp.create({
+            email:email,
+            otp:otp,
+            expiresAt:new Date(
+                Date.now()+5*60*1000
+            )
+        })
+        await sendOTPEmail(email,otp)
+
+        res.status(200).json({
+            success:true,
+            message:"Otp sent Successfully"
+        })
+    }catch(error){
+        console.log(error)
+        
+        res.status(500).json({
+            success:false,
+            message:"Failed to sent Otp"
+        })
+
+    }
+}
+export const verifyOtpAndRegister=async(req,res)=>{
+    try{
+        const {name,email,password,otp}=req.body;
         
         const userExists=await User.findOne({email});
 
+        otpRecord=await Otp.findOne({email})
+        if (!otpRecord){
+            res.status(500).json({
+                success:false,
+                message:'OTP not Found'
+            })
+        }
+
+        if(otpRecord.expiresAt<new Date()){
+            res.status(400).json({
+                success:false,
+                message:'OTP Expired'
+            })
+        }
+
+        if(otpRecord.otp!==otp){
+            res.status(400).json({
+                success:false,
+                message:'Invalid OTP'
+        })
+        }
+        
         if(userExists){
             return res.status(400).json({
                 success:false,
@@ -24,6 +82,7 @@ export const registerUser=async(req,res)=>{
             password:hashedPassword,
         })
 
+        await Otp.deleteMany({email})
         const token=generateWebToken(user._id);
 
         res.cookie("token", token, {

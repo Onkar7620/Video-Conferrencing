@@ -3,8 +3,12 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 const API = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
+
 const Auth = () => {
   const [activeTab, setActiveTab] = useState("login");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [loadingOtp, setLoadingOtp] = useState(false);  
   const navigate=useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -46,27 +50,97 @@ const Auth = () => {
     };
   }
 
+  const handleSendOTP = async () => {
+
+  if (!signupData.email) {
+    alert("Please enter email first");
+    return;
+  }
+
+  try {
+    setLoadingOtp(true);
+
+    const res = await axios.post(
+      `${API}/api/auth/send-otp`,
+      {
+        email: signupData.email,
+      }
+    );
+
+    if (res.data.success) {
+      setOtpSent(true);
+      alert("OTP Sent Successfully");
+    }
+
+  } catch (error) {
+    console.log(error);
+    alert(
+      error.response?.data?.message ||
+      "Failed To Send OTP"
+    );
+  } finally {
+    setLoadingOtp(false);
+  }
+};
+
   const handleSignupSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (signupData.password !== signupData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+  if (signupData.password !== signupData.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  if (!otpSent) {
+    alert("Please send OTP first");
+    return;
+  }
+
+  if (!otp) {
+    alert("Please enter OTP");
+    return;
+  }
+
+  try {
+
+    const res = await axios.post(
+      `${API}/api/auth/register`,
+      {
+        name: signupData.name,
+        email: signupData.email,
+        password: signupData.password,
+        otp,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (res.data.success) {
+      alert("Registration Successful");
+
+      setSignupData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      setOtp("");
+      setOtpSent(false);
+
+      setActiveTab("login");
     }
-    try{
-        const res=await axios.post(`${API}/api/auth/register`,{name: signupData.name, email: signupData.email, password: signupData.password},
-          {withCredentials: true,}
-        );
-        if(res.data.success){
-          navigate("/dashboard");
-        }
 
-    }catch(err){
-        console.error("Signup Error:", err);
-    }
-     
+  } catch (err) {
+    console.error(err);
 
-  };
+    alert(
+      err.response?.data?.message ||
+      "Registration Failed"
+    );
+  }
+};
 
   const handleGoogleLogin = () => {
     console.log("Google Login Clicked");
@@ -197,6 +271,15 @@ const Auth = () => {
                 className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
               />
 
+              <button
+                type="button"
+                onClick={handleSendOTP}
+                disabled={loadingOtp}
+                className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition disabled:bg-gray-400"
+              >
+              {loadingOtp ? "Sending OTP..." : "Send OTP"}
+              </button>
+
               <input
                 type="password"
                 name="password"
@@ -216,6 +299,17 @@ const Auth = () => {
                 required
                 className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
               />
+
+              {otpSent && (
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+                className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+)}
 
               <button
                 type="submit"
