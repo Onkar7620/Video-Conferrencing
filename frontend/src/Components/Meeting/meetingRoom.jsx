@@ -229,7 +229,7 @@ export default function MeetingRoom() {
         autoPlay
         playsInline
         muted
-        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover"
+        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover [transform:scaleX(-1)]"
       />
       <div className="p-3 text-center bg-slate-800">
         You
@@ -242,7 +242,7 @@ export default function MeetingRoom() {
         ref={remoteVideoRef}
         autoPlay
         playsInline
-        className="w-full h-[250px] md:h-[320px] lg:h-[400px] object-contain bg-black"
+        className="w-full h-[250px] md:h-[350px] lg:h-[500px] object-cover [transform:scaleX(-1)]"
       />
       <div className="p-3 text-center bg-slate-800">
         Participant
