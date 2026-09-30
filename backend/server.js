@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import dns from "dns";
 dns.setDefaultResultOrder("ipv4first");
 
@@ -5,6 +7,9 @@ import express from 'express';
 const app=express();
 app.set("trust proxy", 1);
 const PORT=process.env.PORT || 8080;
+
+// console.log("EMAIL_USER =", process.env.EMAIL_USER);
+// console.log("EMAIL_PASS =", process.env.EMAIL_PASS);
 
 
 import http from "http";
@@ -14,12 +19,9 @@ import socketHandler from './sockets/socket.js';
 import mongoose from "mongoose"
 import cors from "cors";
 import cookieParser from "cookie-parser"
-import dotenv from "dotenv"
 
 import authRoutes from "./router/authRoutes.js"
 import meetingRoutes from "./router/meetingRoutes.js";
-
-dotenv.config();
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
