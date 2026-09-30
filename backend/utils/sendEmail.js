@@ -1,7 +1,10 @@
 import nodemailer from 'nodemailer'
 
+console.log("EMAIL_USER =", process.env.EMAIL_USER);
+console.log("EMAIL_PASS exists =", !!process.env.EMAIL_PASS);
+
 const transporter=nodemailer.createTransport({
-    host: "74.125.69.108",
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth:{
@@ -9,6 +12,14 @@ const transporter=nodemailer.createTransport({
         pass:process.env.EMAIL_PASS
     }
 })
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.log("VERIFY ERROR:", error);
+  } else {
+    console.log("SMTP READY");
+  }
+});
 
 export const sendOTPEmail=async(email,otp)=>{
     await transporter.sendMail({
