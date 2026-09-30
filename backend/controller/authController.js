@@ -24,7 +24,6 @@ export const sendOtp=async(req,res)=>{
             )
         })
         await sendOTPEmail(email,otp)
-
         res.status(200).json({
             success:true,
             message:"Otp sent Successfully"
