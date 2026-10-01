@@ -1,5 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
+
+import dns from "dns";
+
+dns.setDefaultResultOrder("ipv4first");
+
 import nodemailer from 'nodemailer'
 
 console.log("EMAIL_USER =", process.env.EMAIL_USER);
@@ -27,13 +32,13 @@ const transporter = nodemailer.createTransport({
   family: 4,
 });
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("VERIFY ERROR:", error);
-  } else {
-    console.log("SMTP READY");
-  }
-});
+// transporter.verify((error, success) => {
+//   if (error) {
+//     console.log("VERIFY ERROR:", error);
+//   } else {
+//     console.log("SMTP READY");
+//   }
+// });
 
 export const sendOTPEmail=async(email,otp)=>{
     await transporter.sendMail({
