@@ -7,7 +7,7 @@ import express from 'express';
 const app=express();
 app.set("trust proxy", 1);
 const PORT=process.env.PORT || 8080;
-
+import { sendOTPEmail } from "./utils/sendEmail.js";
 // console.log("EMAIL_USER =", process.env.EMAIL_USER);
 // console.log("EMAIL_PASS =", process.env.EMAIL_PASS);
 
