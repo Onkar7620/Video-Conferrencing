@@ -24,6 +24,7 @@ const transporter = nodemailer.createTransport({
   connectionTimeout: 60000,
   greetingTimeout: 60000,
   socketTimeout: 60000,
+  family: 4,
 });
 
 transporter.verify((error, success) => {
