@@ -44,7 +44,7 @@ export const verifyOtpAndRegister=async(req,res)=>{
         
         const userExists=await User.findOne({email});
 
-        otpRecord=await Otp.findOne({email})
+        const otpRecord=await Otp.findOne({email})
         if (!otpRecord){
             res.status(500).json({
                 success:false,

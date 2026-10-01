@@ -113,6 +113,39 @@ export default function MeetingRoom() {
       peerConnectionRef.current=pc;
       return pc;
     }
+    const handleLogout = async () => {
+      try {
+        await axios.post(
+          `${API}/api/auth/logout`,
+          {},
+        {
+          withCredentials: true,
+        }
+        );
+
+      // Socket disconnect
+      socket.disconnect();
+
+     // Stop local media
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((track) => {
+        track.stop();
+      });
+      }
+
+      // Close peer connection
+      if (peerConnectionRef.current) {
+        peerConnectionRef.current.close();
+      }
+
+      navigate("/", {
+        replace: true,
+      });
+
+    } catch (error) {
+      console.log("Logout Error:", error);
+    }
+    };
     useEffect(()=>{
         
         let startMedia=async()=>{
@@ -217,6 +250,14 @@ export default function MeetingRoom() {
         {meetingId}
       </span>
     </p>
+    <div className="mt-3">
+      <button
+        onClick={handleLogout}
+        className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold"
+      >
+        Logout
+      </button>
+    </div>
   </div>
 
   {/* Videos */}

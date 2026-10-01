@@ -24,7 +24,7 @@ import authRoutes from "./router/authRoutes.js"
 import meetingRoutes from "./router/meetingRoutes.js";
 
 app.use(cors({
-    origin:process.env.CLIENT_URL,
+    origin:["http://localhost:5173",process.env.CLIENT_URL,],
     credentials:true
 }));
 app.use(express.json());
@@ -62,7 +62,7 @@ const server=http.createServer(app);
 
 const io=new Server(server,{
     cors:{
-        origin:process.env.CLIENT_URL,
+        origin:["http://localhost:5173",process.env.CLIENT_URL],
         credentials:true
     },
 });
