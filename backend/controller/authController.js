@@ -164,9 +164,11 @@ export const loginUser=async(req,res)=>{
 
 export const logoutUser=async(req,res)=>{
 
-    res.cookie("token","",{
-        expires:new Date(0)
-    });
+   res.clearCookie('token',{
+    httpOnly:true,
+    secure:true,
+    sameSite:"none",
+   })
 
     res.status(200).json(
         {
