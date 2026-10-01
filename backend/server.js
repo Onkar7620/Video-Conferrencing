@@ -53,6 +53,16 @@ app.get("/me",Protect,async (req,res)=>{
         user:req.user,
     })
 })
+//Otp Route
+app.get("/test-mail", async (req, res) => {
+  try {
+    await sendOTPEmail("YOUR_EMAIL@gmail.com", "123456");
+    res.send("Mail Sent");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err.message);
+  }
+});
 
 app.get('/',(req,res)=>{
     res.send("this is the dashboard")
