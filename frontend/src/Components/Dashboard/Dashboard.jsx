@@ -1,4 +1,4 @@
-import { Video, PlusCircle } from "lucide-react";
+import { Video, PlusCircle,LogOut } from "lucide-react";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
@@ -8,6 +8,8 @@ const API = import.meta.env.VITE_API_URL;
 export default function Dashboard() {
   const navigate=useNavigate()
   const [meetingId,setMeetingId]=useState("");
+
+  
 
   let handleMeetingId=(e)=>{
     setMeetingId(e.target.value);
@@ -37,9 +39,37 @@ export default function Dashboard() {
     alert(error.response.data.message);
   }
   }
+  const handleLogout = async () => {
+  try {
+    await axios.post(
+      `${API}/api/auth/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    navigate("/", {
+      replace: true,
+    });
+
+  } catch (error) {
+    console.log(error);
+    alert("Logout Failed");
+  }
+};
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-800">
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-white font-semibold transition"
+          >
+    <LogOut size={18} />
+    Logout
+  </button>
+</div>
         
         {/* Header */}
         <div className="text-center mb-8">
