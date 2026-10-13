@@ -185,7 +185,7 @@ export const logoutUser=async(req,res)=>{
 
 export const googleLogin=async(req,res)=>{
     try{
-        const credential= req.body
+        const {credential} = req.body
 
         if(!credential){
             return res.status(400).json({
