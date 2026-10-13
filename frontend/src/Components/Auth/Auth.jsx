@@ -385,7 +385,7 @@ const handleGoogleLogin = async (credentialResponse) => {
 };
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
+console.log("Google Client ID loaded:", Boolean(clientId));
 const AuthWithGoogleProvider = () => {
   if (!clientId) {
     return <p>Google Client ID is missing in .env</p>;
