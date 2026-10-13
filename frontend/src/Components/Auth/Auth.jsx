@@ -384,7 +384,7 @@ const handleGoogleLogin = async (credentialResponse) => {
   );
 };
 
-const clientId = import.meta.env.GOOGLE_CLIENT_ID;
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const AuthWithGoogleProvider = () => {
   if (!clientId) {
