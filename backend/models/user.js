@@ -11,12 +11,18 @@ const userSchema=new Schema(
         email:{
             type:String,
             required:true,
-            unique:true
+            unique:true,
+            lowercase: true,
+            trim: true,
         },
         password:{
             type:String,
-            required:true
+            required:false
         },
+        googleId:{
+            type:String,
+            sparse:true,
+        }
     },
         {timestamps:true}
     

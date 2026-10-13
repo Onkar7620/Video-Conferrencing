@@ -3,6 +3,10 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 const API = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router-dom";
+import {
+  GoogleOAuthProvider,
+  GoogleLogin,
+} from "@react-oauth/google";
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -142,11 +146,35 @@ const Auth = () => {
   }
 };
 
-  const handleGoogleLogin = () => {
-    console.log("Google Login Clicked");
-    
-    // Firebase Google Authentication Here
-  };
+
+const handleGoogleLogin = async (credentialResponse) => {
+  try {
+    const credential = credentialResponse?.credential;
+
+    if (!credential) {
+      alert("Google authentication failed");
+      return;
+    }
+
+    const res = await axios.post(
+      `${API}/api/auth/google`,
+      { credential },
+      { withCredentials: true }
+    );
+
+    if (res.data.success) {
+      navigate("/dashboard");
+    }
+  } catch (error) {
+    console.error("Google login error:", error);
+
+    alert(
+      error.response?.data?.message ||
+      "Google login failed. Please try again."
+    );
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-4">
@@ -191,14 +219,19 @@ const Auth = () => {
           </p>
 
           {/* Google Login */}
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-3 hover:bg-gray-50 transition"
-          >
-            <FcGoogle size={24} />
-            Continue with Google
-          </button>
+
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleLogin}
+              onError={() => {
+                alert("Google sign-in was unsuccessful");
+              }}
+              text="continue_with"
+              shape="rectangular"
+              width="320"
+            />
+          </div>
+
 
           {/* Divider */}
           <div className="flex items-center my-6">
@@ -351,4 +384,18 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+const AuthWithGoogleProvider = () => {
+  if (!clientId) {
+    return <p>Google Client ID is missing in .env</p>;
+  }
+
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <Auth />
+    </GoogleOAuthProvider>
+  );
+};
+
+export default AuthWithGoogleProvider;
